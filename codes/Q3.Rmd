@@ -1,0 +1,60 @@
+---
+title: "Association Rule Mining"
+author: "Nimish Amlathe"
+date: "15 August 2016"
+output: pdf_document
+---
+  
+## Association rule mining
+
+##### Read in the grocery data. 
+
+
+* First creating a list of baskets: vectors of items by consumer.
+* Analagous to bags of words. 
+* Apriori algorithm expects a list of baskets in a special format.
+* Removing duplicates and then Casting this variable as a arules "transactions" class.
+
+```{r}
+
+library(arules)
+library(arulesViz)
+
+groceries = read.transactions(file = "files/groceries.txt", rm.duplicates = TRUE, format = "basket", sep = ',')
+
+```
+
+
+Let's plot an Item-frequency chart to guage how much more often certain items are present in the dataset.
+```{r}
+# Plotting top 20 items by frequency
+itemFrequencyPlot(groceries,topN=20,type = "absolute", col = 'blue', xlab = 'Item', main = 'Frequency of Item Purchases')
+
+```
+
+##### Running the 'apriori' algorithm. 
+Looking at rules with support > .01 & confidence >.5 & length #items <= 6
+
+```{r}
+grocrules <- apriori(groceries, parameter=list(support=.01, confidence=.5, maxlen=6))
+inspect(grocrules)
+
+```
+
+
+##### Trying various subsets
+```{r}
+## Trying various subsets
+inspect(subset(grocrules, subset = lift > 3))
+inspect(subset(grocrules, subset = confidence > 0.5))
+inspect(subset(grocrules, subset = support > .01 & confidence > 0.3))
+
+rules = apriori(groceries, parameter = list(support=.01, confidence=.3, target='rules'))
+plot(rules)
+```
+
+##### Conclusion
+
+Whole milk, other vegetables and yogurt are some of the most likely to be purchased items based on various itemsets. These are also amongst the items with the highest support counts.
+
+The various itemsets we have seen so far point to associations between people who buy a certain kind of items also buying some of the more frequently occuring items. For example, people who buy a lot of diary products tend to also buy milk, and people how buy a lot of fruits and vegetables also tend to biuy milk and other vegetables, etc. We did not see any rare patterns or patterns amongst itemsets with very low support (some niche products, etc.)
