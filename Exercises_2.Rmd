@@ -77,7 +77,7 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 
 
 ### Quesion: What is the best time of day to fly to minimize delays?
-```{r, results="hide", message=FALSE}
+```{r, results="hide", message=FALSE, echo=FALSE}
 
 # Creating R-type datetime variable; specifically POSIXct (UNIX time format)
 ABIA$CRSDepTime_TF <- as.POSIXct(
@@ -153,7 +153,7 @@ p4
 The best time to fly during the day is either in the early morning (between 8.30 to 9.30) or late in the night (after 8.30 pm). One should definitely avoid the time between 5 pm to 8 pm as this period has the most number of delays.
 
 ### Question 2: What is the best time of year and time of the week to fly to minimize delays?
-```{r, results="hide", message=FALSE}
+```{r, results="hide", message=FALSE, echo=FALSE}
 
 # Converting Day of week and Month variables to character levels
 ABIA <- ABIA %>%
@@ -210,8 +210,8 @@ p4 <- ggplot(aes(x = Month_C), data = Delays_across_TOD) +
 
 # p1
 # p2
-p3
-p4
+# p3
+# p4
   
 # Creating bins: 15-min bins till 3 hourus and 5-hour bins after that
 Delays_across_TOD$DelayBin <- cut(Delays_across_TOD$DepDelay, 
@@ -252,11 +252,11 @@ p7
 # p8
 
 ```
-
+March and June have the most number of delays. After that, May, July, August and December have the next most number of delays. So, January, February and September through November are the best months to fly in.
 
 
 ### Question: What are the bad airports to fly to?
-```{r, results="hide", message=FALSE}
+```{r, results="hide", message=FALSE, echo=FALSE}
 # Filtering for Arrival Delays 
 
 airdatadelay = subset(ABIA, ABIA$ArrDelay >= 0)
@@ -276,7 +276,7 @@ p1
 The histogram shows us that the Dallas Love Field along with Dallas Fort Worth are the worst airports when it comes to cancellation of flights. The George Bush Intercontinental Airport at Houston has the third most number of cancelled flights. In addition, busiest airports in the States like Chicago O'Hare and Atlanta are also among the list of most cancelled flights.
 
 
-```{r, results="hide", message=FALSE}
+```{r, results="hide", message=FALSE, echo=FALSE}
 # Worst airport by arrival delay
 arr <- aggregate(airdatadelay$ArrDelay, by=list(Category=airdatadelay$Dest), FUN=mean, na.rm='True')
 newarr <- arr[order(arr$x,decreasing = TRUE),]
@@ -300,8 +300,8 @@ p2 <- ggplot(aes(x = Category, y = x), data = newdep ) +
   ggtitle("Airports to travel to with max delays")
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 1))
 
-# p1
-# p2
+p1
+p2
 ```
 
 If we go by the Arrival Delay histogram, the Des Moines International Airport is the worst airport to travel from. However this cannot be validated since our dataset has only one entry for DSM. Thus, Salt Lake City and Washington Dulles International Airport have an average delay time close to 75 mins.
@@ -315,7 +315,7 @@ The worst airports to travel too include the likes of Salt Lake City, Washington
 
 ### 1. Naive Bayes Approach
 
-Reading the files in the directory paths and creataing list of files and authors to train on.
+Reading the files in the directory paths and creating list of files and authors to train on.
 ```{r, results="hide", message = FALSE}
 ### Read Data ###
 library(tm)
